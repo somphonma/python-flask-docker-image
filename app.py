@@ -1,14 +1,19 @@
-from flask import Flask
+import dash
+import dash as dash
 import logging as logger
+from influxdb import InfluxDBClient
+
 logger.basicConfig(level="DEBUG")
 
+from flask import Flask
 
-flaskAppInstance = Flask(__name__)
+app = Flask(__name__)
 
+@app.route('/hello')
+def helloIndex():
+    client = InfluxDBClient(host="influxdb", port=8086)
+    print(client.get_list_database())
+    return "hello world"
 
+app.run(host='0.0.0.0',port=5000)
 
-if __name__ == '__main__':
-
-    logger.debug("Starting Flask Server")
-    from api import *
-    flaskAppInstance.run(host="0.0.0.0",port=5000,debug=True,use_reloader=True)
